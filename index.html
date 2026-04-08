@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hezekiah Nt. Umoh — Azure Cloud & DevOps Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0f1a;
+  --bg2: #0f1422;
+  --bg3: #141929;
+  --panel: #161c2e;
+  --panel2: #1b2236;
+  --navy: #1a2744;
+  --red: #c81f26;
+  --red-glow: rgba(200,31,38,0.18);
+  --red-dim: rgba(200,31,38,0.35);
+  --blue-accent: #2a6dd9;
+  --green: #2ecf7a;
+  --text: #e8ecf4;
+  --text-mid: #8a95b0;
+  --text-dim: #4a546a;
+  --border: rgba(255,255,255,0.07);
+  --border-red: rgba(200,31,38,0.3);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'IBM Plex Mono',monospace;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  cursor:default;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 6%;height:60px;
+  background:rgba(11,15,26,0.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{
+  font-family:'Syne',sans-serif;
+  font-weight:800;font-size:1rem;
+  letter-spacing:0.06em;
+  color:var(--text);
+}
+.nav-brand span{color:var(--red)}
+.nav-status{
+  display:flex;align-items:center;gap:0.5rem;
+  font-size:0.68rem;letter-spacing:0.12em;
+  color:var(--green);
+}
+.nav-status::before{
+  content:'';width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px var(--green);
+  animation:pulse 2s infinite;
+}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{
+  color:var(--text-mid);text-decoration:none;
+  font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--red)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;
+  padding:100px 6% 80px;
+  position:relative;overflow:hidden;
+}
+.hero-bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(200,31,38,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,31,38,0.03) 1px,transparent 1px);
+  background-size:60px 60px;
+  pointer-events:none;
+}
+.hero-bg-glow{
+  position:absolute;
+  top:20%;right:5%;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(200,31,38,0.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-left{
+  position:relative;z-index:2;
+  animation:fadeUp 0.8s ease both;
+}
+.hero-prompt{
+  font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--red);margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:0.75rem;
+}
+.hero-prompt::before{content:'>';color:var(--red);font-size:0.9rem}
+.hero-name{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:clamp(2.6rem,4.5vw,3.8rem);
+  line-height:1.05;
+  color:var(--text);
+  margin-bottom:0.5rem;
+  letter-spacing:-0.01em;
+}
+.hero-name span{color:var(--red)}
+.hero-role{
+  font-family:'Lora',serif;
+  font-style:italic;
+  font-size:clamp(1rem,1.8vw,1.3rem);
+  color:var(--text-mid);
+  margin-bottom:2rem;
+  letter-spacing:0.02em;
+}
+.hero-summary{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.82rem;
+  line-height:1.85;
+  color:var(--text-mid);
+  max-width:500px;
+  margin-bottom:2.5rem;
+  border-left:2px solid var(--red-dim);
+  padding-left:1.2rem;
+}
+.hero-summary strong{color:var(--text);font-weight:500}
+.hero-links{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.link-chip{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.45rem 1rem;
+  border:1px solid var(--border);
+  border-radius:2px;
+  font-size:0.72rem;letter-spacing:0.1em;
+  color:var(--text-mid);text-decoration:none;
+  transition:all 0.2s;
+}
+.link-chip:hover{border-color:var(--red);color:var(--text);background:var(--red-glow)}
+.link-chip svg{width:14px;height:14px;flex-shrink:0}
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-red{
+  padding:0.75rem 1.8rem;background:var(--red);
+  color:var(--text);text-decoration:none;
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;
+  border-radius:2px;transition:all 0.2s;border:none;cursor:pointer;
+}
+.btn-red:hover{background:#e5232b;transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,31,38,0.3)}
+.btn-ghost{
+  padding:0.75rem 1.8rem;
+  border:1px solid rgba(255,255,255,0.15);
+  color:var(--text-mid);text-decoration:none;
+  font-family:'Syne',sans-serif;font-weight:600;
+  font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;
+  border-radius:2px;transition:all 0.2s;
+}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.4);color:var(--text);transform:translateY(-2px)}
+
+/* Hero right — pipeline visual */
+.hero-right{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  animation:fadeUp 0.8s 0.15s ease both;
+}
+.logo-frame{
+  width:190px;height:190px;
+  border-radius:50%;
+  border:2px solid var(--red);
+  padding:5px;
+  position:relative;
+  margin-bottom:2.5rem;
+}
+.logo-frame::before{
+  content:'';position:absolute;inset:-12px;
+  border-radius:50%;border:1px solid rgba(200,31,38,0.2);
+  animation:spin 20s linear infinite;
+  border-top-color:var(--red);
+}
+.logo-frame::after{
+  content:'';position:absolute;inset:-24px;
+  border-radius:50%;border:1px dashed rgba(255,255,255,0.04);
+}
+.logo-inner{
+  width:100%;height:100%;border-radius:50%;
+  background:var(--panel2);
+  overflow:hidden;display:flex;align-items:center;justify-content:center;
+}
+.logo-inner img{width:100%;height:100%;object-fit:contain;padding:28px}
+
+/* pipeline card */
+.pipeline-card{
+  width:100%;max-width:440px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:4px;
+  overflow:hidden;
+}
+.pipeline-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.65rem 1.1rem;
+  background:var(--panel2);
+  border-bottom:1px solid var(--border);
+}
+.pipeline-title{font-size:0.7rem;letter-spacing:0.1em;color:var(--text-mid)}
+.pipeline-status{
+  display:flex;align-items:center;gap:0.4rem;
+  font-size:0.65rem;color:var(--green);letter-spacing:0.1em;
+}
+.pipeline-status::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 6px var(--green);
+  animation:pulse 1.5s infinite;
+}
+.pipeline-stages{
+  display:flex;align-items:center;padding:1.1rem;gap:0;
+}
+.stage{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:0.4rem;
+  position:relative;
+}
+.stage:not(:last-child)::after{
+  content:'';
+  position:absolute;top:12px;left:50%;width:100%;height:1px;
+  background:linear-gradient(90deg,var(--border-red),var(--border));
+  z-index:0;
+}
+.stage-dot{
+  width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.6rem;z-index:1;flex-shrink:0;
+}
+.stage-dot.done{background:var(--red);color:#fff}
+.stage-dot.active{background:var(--panel2);border:2px solid var(--green);color:var(--green);animation:pulse 1.2s infinite}
+.stage-dot.pending{background:var(--panel2);border:1px solid var(--text-dim);color:var(--text-dim)}
+.stage-label{font-size:0.6rem;letter-spacing:0.08em;color:var(--text-dim);text-transform:uppercase;text-align:center}
+.pipeline-log{
+  padding:0.75rem 1.1rem;
+  background:rgba(0,0,0,0.2);
+  border-top:1px solid var(--border);
+  font-size:0.65rem;line-height:1.8;color:var(--text-dim);
+}
+.log-line{display:flex;gap:0.6rem}
+.log-line .ts{color:var(--text-dim);flex-shrink:0}
+.log-line .msg{color:var(--text-mid)}
+.log-line .msg.ok{color:var(--green)}
+.log-line .msg.info{color:var(--blue-accent)}
+
+/* ── SECTION SHARED ── */
+section{padding:90px 6%}
+.s-label{
+  font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--red);margin-bottom:0.8rem;
+  display:flex;align-items:center;gap:0.7rem;
+}
+.s-label::before{content:'//';color:var(--text-dim);font-size:0.8rem}
+.s-title{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(1.9rem,3vw,2.6rem);
+  color:var(--text);margin-bottom:3rem;letter-spacing:-0.01em;
+  line-height:1.1;
+}
+.s-title em{color:var(--red);font-style:italic;font-family:'Lora',serif}
+
+/* ── DEVOPS SKILLS ── */
+#skills{background:var(--bg2)}
+.skills-master{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:1.5px;
+  background:var(--border);
+  border:1px solid var(--border);
+}
+.skill-block{
+  background:var(--bg2);
+  padding:2rem;
+  transition:background 0.25s;
+  position:relative;overflow:hidden;
+}
+.skill-block::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--red);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 0.35s ease;
+}
+.skill-block:hover{background:var(--panel)}
+.skill-block:hover::before{transform:scaleX(1)}
+.skill-block-icon{
+  width:40px;height:40px;border-radius:3px;
+  background:var(--red-glow);border:1px solid var(--border-red);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;margin-bottom:1rem;
+}
+.skill-block-name{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:0.9rem;color:var(--text);
+  margin-bottom:0.75rem;letter-spacing:0.03em;
+}
+.tech-tags{display:flex;flex-wrap:wrap;gap:0.4rem}
+.tech-tag{
+  font-size:0.67rem;letter-spacing:0.08em;
+  padding:0.25rem 0.6rem;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);
+  border-radius:2px;color:var(--text-mid);
+  transition:all 0.15s;
+}
+.tech-tag:hover{border-color:var(--red-dim);color:var(--text);background:var(--red-glow)}
+
+/* ── PROJECTS ── */
+#projects{background:var(--bg)}
+.projects-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:1.5rem;
+}
+.proj-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:4px;
+  overflow:hidden;
+  transition:transform 0.25s,box-shadow 0.25s;
+}
+.proj-card:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,0.4),0 0 0 1px var(--border-red)}
+.proj-card-top{
+  padding:1.5rem 1.5rem 0;
+  display:flex;align-items:flex-start;justify-content:space-between;
+}
+.proj-num{
+  font-size:2.5rem;font-weight:800;font-family:'Syne',sans-serif;
+  color:var(--border);line-height:1;letter-spacing:-0.04em;
+  user-select:none;
+}
+.proj-badge{
+  font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;
+  padding:0.2rem 0.6rem;border-radius:2px;
+  background:var(--red-glow);border:1px solid var(--border-red);
+  color:var(--red);
+}
+.proj-body{padding:1rem 1.5rem 1.5rem}
+.proj-title{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:1rem;color:var(--text);
+  margin-bottom:0.6rem;letter-spacing:0.01em;
+}
+.proj-desc{
+  font-size:0.8rem;line-height:1.75;color:var(--text-mid);
+  margin-bottom:1.1rem;
+}
+.proj-bullets{list-style:none;display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1.1rem}
+.proj-bullets li{
+  font-size:0.77rem;line-height:1.6;color:var(--text-mid);
+  padding-left:1rem;position:relative;
+}
+.proj-bullets li::before{content:'▸';position:absolute;left:0;color:var(--red);font-size:0.65rem;top:0.1rem}
+.proj-stack{display:flex;flex-wrap:wrap;gap:0.4rem}
+.stack-tag{
+  font-size:0.63rem;letter-spacing:0.06em;
+  padding:0.2rem 0.55rem;
+  background:rgba(42,109,217,0.1);
+  border:1px solid rgba(42,109,217,0.2);
+  border-radius:2px;color:#6fa8f5;
+}
+
+/* ── EXPERIENCE ── */
+#experience{background:var(--bg2)}
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
+.exp-main{border-left:2px solid var(--red);padding-left:2rem;position:relative}
+.exp-main::before{
+  content:'';
+  position:absolute;left:-5px;top:4px;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--red);box-shadow:0 0 10px var(--red);
+}
+.exp-period{
+  font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--red);margin-bottom:0.5rem;
+}
+.exp-company{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:1.3rem;color:var(--text);margin-bottom:0.2rem;
+}
+.exp-role{
+  font-size:0.8rem;color:var(--text-mid);margin-bottom:1rem;letter-spacing:0.05em;
+}
+.exp-bullets{list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem}
+.exp-bullets li{font-size:0.82rem;line-height:1.7;color:var(--text-mid);padding-left:1.1rem;position:relative}
+.exp-bullets li::before{content:'→';position:absolute;left:0;color:var(--red);font-size:0.7rem}
+
+/* past experience mini cards */
+.past-grid{display:flex;flex-direction:column;gap:1rem}
+.past-card{
+  background:var(--panel);
+  border:1px solid var(--border);border-radius:3px;
+  padding:1.1rem 1.25rem;
+  transition:border-color 0.2s;
+}
+.past-card:hover{border-color:var(--border-red)}
+.past-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.3rem}
+.past-company{font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:var(--text)}
+.past-period{font-size:0.65rem;color:var(--text-dim);letter-spacing:0.08em}
+.past-role{font-size:0.75rem;color:var(--red);margin-bottom:0.4rem;letter-spacing:0.04em}
+.past-note{font-size:0.75rem;line-height:1.6;color:var(--text-dim)}
+
+/* ── CERTIFICATIONS ── */
+#certifications{background:var(--bg)}
+.certs-row{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:1.5px;background:var(--border);border:1px solid var(--border);
+}
+.cert-item{
+  background:var(--bg);padding:1.75rem 1.5rem;
+  display:flex;flex-direction:column;gap:0.6rem;
+  transition:background 0.2s;
+}
+.cert-item:hover{background:var(--panel)}
+.cert-icon{font-size:1.4rem;margin-bottom:0.2rem}
+.cert-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;color:var(--text);line-height:1.3}
+.cert-issuer{font-size:0.72rem;color:var(--text-mid)}
+.cert-year{font-size:0.68rem;letter-spacing:0.1em;color:var(--red)}
+
+/* ── CONTACT ── */
+#contact{
+  background:var(--panel);
+  border-top:1px solid var(--border);
+  text-align:center;padding:90px 6%;
+}
+#contact .s-label{justify-content:center}
+#contact .s-label::before{display:none}
+.contact-row{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:1.5rem;margin-top:3rem;
+}
+.contact-item{
+  display:flex;align-items:center;gap:0.75rem;
+  background:var(--panel2);border:1px solid var(--border);
+  border-radius:3px;padding:1rem 1.5rem;
+  text-decoration:none;color:var(--text-mid);
+  font-size:0.8rem;transition:all 0.2s;
+  min-width:200px;justify-content:center;
+}
+.contact-item:hover{border-color:var(--red);color:var(--text);background:var(--red-glow)}
+.contact-item-icon{font-size:1rem}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--bg);padding:1.5rem 6%;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+  border-top:1px solid var(--border);
+}
+footer p{font-size:0.7rem;color:var(--text-dim)}
+.footer-brand{font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:var(--text-dim)}
+.footer-brand span{color:var(--red)}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* scroll reveal */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding:90px 6% 60px}
+  .hero-right{display:none}
+  .exp-grid{grid-template-columns:1fr}
+  nav .nav-links{display:none}
+  nav .nav-status{display:none}
+  section{padding:70px 5%}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">HN<span>.</span>Umoh</div>
+  <div class="nav-status">AVAILABLE FOR HIRE</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-bg-glow"></div>
+
+  <div class="hero-left">
+    <p class="hero-prompt">Azure Cloud &amp; DevOps Engineer</p>
+    <h1 class="hero-name">Hezekiah<br><span>Nt.</span> Umoh</h1>
+    <p class="hero-role">Building pipelines. Shipping infrastructure. Automating everything.</p>
+    <p class="hero-summary">
+      DevOps engineer with hands-on experience building <strong>CI/CD pipelines</strong>, deploying containerised apps to <strong>Azure</strong>, automating workflows with <strong>PowerShell &amp; Bash</strong>, and managing cloud environments. Backed by <strong>9+ years</strong> of broader I.T. — network engineering, data analytics, and systems administration — bringing rare full-stack infrastructure depth.
+    </p>
+    <div class="hero-links">
+      <a href="https://github.com/ntonous" class="link-chip" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+        github.com/ntonous
+      </a>
+      <a href="https://linkedin.com/in/hezekiah-umoh-799811188" class="link-chip" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn-red">View Projects</a>
+      <a href="#contact" class="btn-ghost">Get In Touch</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="logo-frame">
+      <div class="logo-inner">
+        <img src="/mnt/user-data/uploads/nts_logo.jpeg" alt="Logo">
+      </div>
+    </div>
+    <!-- Fake CI/CD Pipeline Card -->
+    <div class="pipeline-card">
+      <div class="pipeline-header">
+        <span class="pipeline-title">azure-devops / main-pipeline.yml</span>
+        <span class="pipeline-status">RUNNING</span>
+      </div>
+      <div class="pipeline-stages">
+        <div class="stage">
+          <div class="stage-dot done">✓</div>
+          <div class="stage-label">Source</div>
+        </div>
+        <div class="stage">
+          <div class="stage-dot done">✓</div>
+          <div class="stage-label">Build</div>
+        </div>
+        <div class="stage">
+          <div class="stage-dot done">✓</div>
+          <div class="stage-label">Test</div>
+        </div>
+        <div class="stage">
+          <div class="stage-dot active">▶</div>
+          <div class="stage-label">Deploy</div>
+        </div>
+        <div class="stage">
+          <div class="stage-dot pending">○</div>
+          <div class="stage-label">Monitor</div>
+        </div>
+      </div>
+      <div class="pipeline-log">
+        <div class="log-line"><span class="ts">[09:14:02]</span><span class="msg ok">✓ Docker image built &amp; pushed to ACR</span></div>
+        <div class="log-line"><span class="ts">[09:14:18]</span><span class="msg info">↳ Deploying to Azure App Service...</span></div>
+        <div class="log-line"><span class="ts">[09:14:31]</span><span class="msg">⧗ Awaiting health check response...</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DEVOPS SKILLS -->
+<section id="skills">
+  <p class="s-label">Core Capabilities</p>
+  <h2 class="s-title reveal">DevOps &amp; Cloud <em>Expertise</em></h2>
+  <div class="skills-master reveal">
+    <div class="skill-block">
+      <div class="skill-block-icon">☁</div>
+      <div class="skill-block-name">Microsoft Azure</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Virtual Machines</span>
+        <span class="tech-tag">App Service</span>
+        <span class="tech-tag">Azure Storage</span>
+        <span class="tech-tag">Azure SQL</span>
+        <span class="tech-tag">VNets &amp; NSGs</span>
+        <span class="tech-tag">Azure Monitor</span>
+        <span class="tech-tag">Azure CLI</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-icon">⚙</div>
+      <div class="skill-block-name">CI/CD Pipelines</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Azure DevOps</span>
+        <span class="tech-tag">YAML Pipelines</span>
+        <span class="tech-tag">Classic Pipelines</span>
+        <span class="tech-tag">GitHub Actions</span>
+        <span class="tech-tag">Artifact Management</span>
+        <span class="tech-tag">Release Gates</span>
+        <span class="tech-tag">.NET Deployments</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-icon">🐳</div>
+      <div class="skill-block-name">Containerization</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Docker</span>
+        <span class="tech-tag">Dockerfiles</span>
+        <span class="tech-tag">Docker CLI</span>
+        <span class="tech-tag">Azure Container Registry</span>
+        <span class="tech-tag">Image Tagging</span>
+        <span class="tech-tag">Container Testing</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-icon">📜</div>
+      <div class="skill-block-name">Infrastructure as Code</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Bicep</span>
+        <span class="tech-tag">ARM Templates</span>
+        <span class="tech-tag">Azure CLI Automation</span>
+        <span class="tech-tag">Template Validation</span>
+        <span class="tech-tag">Resource Provisioning</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-icon">💻</div>
+      <div class="skill-block-name">Scripting &amp; Automation</div>
+      <div class="tech-tags">
+        <span class="tech-tag">PowerShell</span>
+        <span class="tech-tag">Bash</span>
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">Linux (Ubuntu)</span>
+        <span class="tech-tag">Windows Server</span>
+        <span class="tech-tag">Task Automation</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="skill-block-icon">🔀</div>
+      <div class="skill-block-name">Version Control &amp; Monitoring</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Git &amp; GitHub</span>
+        <span class="tech-tag">Azure Repos</span>
+        <span class="tech-tag">Branch Strategy</span>
+        <span class="tech-tag">PR Workflows</span>
+        <span class="tech-tag">Azure Monitor Alerts</span>
+        <span class="tech-tag">Performance Dashboards</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="s-label">Hands-on Work</p>
+  <h2 class="s-title reveal">DevOps <em>Projects</em></h2>
+  <div class="projects-grid reveal">
+
+    <div class="proj-card">
+      <div class="proj-card-top">
+        <div class="proj-num">01</div>
+        <span class="proj-badge">CI/CD</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-title">Azure App Deployment via CI/CD Pipeline</div>
+        <div class="proj-desc">End-to-end automated pipeline delivering code from commit to Azure App Service — zero manual intervention.</div>
+        <ul class="proj-bullets">
+          <li>Built multi-stage pipelines (build → test → deploy) using YAML in Azure DevOps</li>
+          <li>Configured pipeline triggers, environment approvals, and GitHub integration</li>
+          <li>Implemented artifact publishing and secure variable group handling</li>
+        </ul>
+        <div class="proj-stack">
+          <span class="stack-tag">Azure DevOps</span>
+          <span class="stack-tag">YAML</span>
+          <span class="stack-tag">Azure App Service</span>
+          <span class="stack-tag">GitHub</span>
+          <span class="stack-tag">.NET</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-card-top">
+        <div class="proj-num">02</div>
+        <span class="proj-badge">Docker</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-title">Containerising Applications with Docker &amp; ACR</div>
+        <div class="proj-desc">Packaged applications into portable, production-ready Docker containers pushed to Azure Container Registry.</div>
+        <ul class="proj-bullets">
+          <li>Authored optimised Dockerfiles for application packaging</li>
+          <li>Pushed versioned images to Azure Container Registry (ACR)</li>
+          <li>Ran and tested containers locally using Docker CLI</li>
+        </ul>
+        <div class="proj-stack">
+          <span class="stack-tag">Docker</span>
+          <span class="stack-tag">Dockerfile</span>
+          <span class="stack-tag">Azure Container Registry</span>
+          <span class="stack-tag">Docker CLI</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-card-top">
+        <div class="proj-num">03</div>
+        <span class="proj-badge">IaC</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-title">Azure Infrastructure Automation (Bicep / ARM)</div>
+        <div class="proj-desc">Replaced manual portal click-ops with repeatable, version-controlled infrastructure deployments.</div>
+        <ul class="proj-bullets">
+          <li>Authored Bicep templates for Azure resource provisioning</li>
+          <li>Automated deployments via Azure CLI scripts</li>
+          <li>Validated infrastructure with template output verification</li>
+        </ul>
+        <div class="proj-stack">
+          <span class="stack-tag">Bicep</span>
+          <span class="stack-tag">ARM Templates</span>
+          <span class="stack-tag">Azure CLI</span>
+          <span class="stack-tag">PowerShell</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-card-top">
+        <div class="proj-num">04</div>
+        <span class="proj-badge">Monitoring</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-title">Azure Monitoring &amp; Logging Setup</div>
+        <div class="proj-desc">Built observability infrastructure to detect failures and track performance in real time.</div>
+        <ul class="proj-bullets">
+          <li>Configured Azure Monitor alerts for CPU, memory, and failure thresholds</li>
+          <li>Built application and system performance dashboards</li>
+          <li>Applied anomaly detection reducing machinery downtime by 15%</li>
+        </ul>
+        <div class="proj-stack">
+          <span class="stack-tag">Azure Monitor</span>
+          <span class="stack-tag">Log Analytics</span>
+          <span class="stack-tag">Alerts</span>
+          <span class="stack-tag">Dashboards</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-card-top">
+        <div class="proj-num">05</div>
+        <span class="proj-badge">Git</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-title">Git Version Control Workflow</div>
+        <div class="proj-desc">Applied professional branching strategy and pipeline-triggered validation across collaborative repos.</div>
+        <ul class="proj-bullets">
+          <li>Used feature / development / main branching model</li>
+          <li>Managed pull requests and merge conflict resolution</li>
+          <li>Automated build validation on push using pipeline triggers</li>
+        </ul>
+        <div class="proj-stack">
+          <span class="stack-tag">Git</span>
+          <span class="stack-tag">GitHub</span>
+          <span class="stack-tag">Azure Repos</span>
+          <span class="stack-tag">PR Workflow</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-card-top">
+        <div class="proj-num">06</div>
+        <span class="proj-badge">Data + Cloud</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-title">Cloud Data Pipeline Migration (AWS &amp; Azure)</div>
+        <div class="proj-desc">Migrated on-prem data processing to cloud — a 40% cut in processing time enabling real-time analytics.</div>
+        <ul class="proj-bullets">
+          <li>Spearheaded pipeline migration to AWS &amp; Azure cloud infrastructure</li>
+          <li>Enabled real-time data analysis and faster decision-making</li>
+          <li>Delivered ₦80M/yr in cost savings via anomaly detection integration</li>
+        </ul>
+        <div class="proj-stack">
+          <span class="stack-tag">Azure</span>
+          <span class="stack-tag">AWS</span>
+          <span class="stack-tag">Python</span>
+          <span class="stack-tag">SQL</span>
+          <span class="stack-tag">Automation</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="s-label">Career</p>
+  <h2 class="s-title reveal">Professional <em>Experience</em></h2>
+  <div class="exp-grid reveal">
+
+    <div>
+      <!-- Current DevOps role -->
+      <div class="exp-main">
+        <div class="exp-period">2025 — PRESENT</div>
+        <div class="exp-company">Cloud / DevOps Engineer</div>
+        <div class="exp-role">Hands-on Project Experience · Self-Directed</div>
+        <ul class="exp-bullets">
+          <li>Managing CI/CD pipelines in Azure DevOps end-to-end</li>
+          <li>Automating deployment tasks using PowerShell and Bash</li>
+          <li>Building and deploying containerised apps with Docker</li>
+          <li>Setting up Azure dev/test environments from scratch</li>
+          <li>Collaborating via GitHub and Azure Repos workflows</li>
+        </ul>
+      </div>
+
+      <br>
+
+      <!-- Prognozai -->
+      <div class="exp-main" style="border-color:rgba(255,255,255,0.1)">
+        <div style="position:absolute;left:-5px;top:4px;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2)"></div>
+        <div class="exp-period">AUG 2022 — 2024</div>
+        <div class="exp-company">Prognozai</div>
+        <div class="exp-role">Associate Consultant — Data Analyst (Remote, Ohio USA)</div>
+        <ul class="exp-bullets">
+          <li>Spearheaded cloud data pipeline migration to AWS &amp; Azure</li>
+          <li>Predictive ML model — 20% improvement in demand forecasting</li>
+          <li>Led 6-person team annotating 50K+ images for autonomous vehicle AI</li>
+          <li>Anomaly detection reducing downtime 15%, saving ₦80M/yr</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="past-grid">
+      <div class="past-card">
+        <div class="past-header">
+          <span class="past-company">Tech Mahindra (Bluechip Technology)</span>
+          <span class="past-period">2019 – 2021</span>
+        </div>
+        <div class="past-role">Software Analyst · MTN Nigeria</div>
+        <div class="past-note">Python/SQL automation cutting onboarding 83%. Tableau KPI dashboards. JIRA-based support reducing resolution time 40%.</div>
+      </div>
+      <div class="past-card">
+        <div class="past-header">
+          <span class="past-company">Cimnet Infrastructure Limited</span>
+          <span class="past-period">2018 – 2019</span>
+        </div>
+        <div class="past-role">System Administrator</div>
+        <div class="past-note">Network redesign with Cisco — 30% uptime increase. Security incident reduction of 50% over one year.</div>
+      </div>
+      <div class="past-card">
+        <div class="past-header">
+          <span class="past-company">PCB Computers Limited</span>
+          <span class="past-period">2016 – 2018</span>
+        </div>
+        <div class="past-role">System Administrator</div>
+        <div class="past-note">300+ hardware/software issues resolved with 97% customer satisfaction. Led 5-engineer team.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <p class="s-label">Credentials</p>
+  <h2 class="s-title reveal">Certifications &amp; <em>Education</em></h2>
+  <div class="certs-row reveal">
+    <div class="cert-item">
+      <div class="cert-icon">🏅</div>
+      <div class="cert-name">Microsoft Certified: Azure Developer Associate</div>
+      <div class="cert-issuer">Microsoft</div>
+      <div class="cert-year">ACTIVE</div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">☁</div>
+      <div class="cert-name">Azure Fundamentals (AZ-900)</div>
+      <div class="cert-issuer">Microsoft</div>
+      <div class="cert-year">AUG 2023</div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">📊</div>
+      <div class="cert-name">Data Analytics Professional Program</div>
+      <div class="cert-issuer">OneCampus Academy</div>
+      <div class="cert-year">AUG 2023</div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">🌐</div>
+      <div class="cert-name">CCNA Routing &amp; Switching</div>
+      <div class="cert-issuer">New Horizons</div>
+      <div class="cert-year">2019</div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">🔧</div>
+      <div class="cert-name">ITIL 4 Foundation</div>
+      <div class="cert-issuer">Tech Mahindra</div>
+      <div class="cert-year">2019</div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-icon">🎓</div>
+      <div class="cert-name">B.Sc. Computer Science</div>
+      <div class="cert-issuer">ISSPT, Benin Republic</div>
+      <div class="cert-year">2020 – 2023</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="s-label">Get In Touch</p>
+  <h2 class="s-title">Let's build something <em>great</em></h2>
+  <div class="contact-row reveal">
+    <a href="mailto:nttonous@gmail.com" class="contact-item">
+      <span class="contact-item-icon">✉</span> nttonous@gmail.com
+    </a>
+    <a href="tel:+2349091202365" class="contact-item">
+      <span class="contact-item-icon">📞</span> +234 909 120 2365
+    </a>
+    <a href="https://github.com/ntonous" class="contact-item" target="_blank">
+      <span class="contact-item-icon">⌥</span> github.com/ntonous
+    </a>
+    <a href="https://linkedin.com/in/hezekiah-umoh-799811188" class="contact-item" target="_blank">
+      <span class="contact-item-icon">in</span> LinkedIn Profile
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">HN<span>.</span>Umoh</div>
+  <p>© 2026 Hezekiah Ntokon Umoh · Azure Cloud &amp; DevOps Engineer · Lagos, Nigeria</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)} });
+  }, {threshold:0.1});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{
+    el.style.transitionDelay=(i*0.07)+'s';
+    obs.observe(el);
+  });
+
+  // Animate pipeline log lines cycling
+  const logs = [
+    ['09:14:02','✓ Docker image built &amp; pushed to ACR','ok'],
+    ['09:14:18','↳ Deploying to Azure App Service...','info'],
+    ['09:14:31','⧗ Awaiting health check...',''],
+    ['09:14:44','✓ Health check passed','ok'],
+    ['09:14:45','✓ Deployment successful — v2.4.1','ok'],
+    ['09:14:46','↳ Setting up Azure Monitor alerts...','info'],
+  ];
+  let li = 2;
+  const logContainer = document.querySelector('.pipeline-log');
+  setInterval(()=>{
+    const lines = logContainer.querySelectorAll('.log-line');
+    lines[0].remove();
+    const next = logs[li % logs.length]; li++;
+    const d = document.createElement('div');
+    d.className='log-line';
+    d.innerHTML=`<span class="ts">[${next[0]}]</span><span class="msg ${next[2]}">${next[1]}</span>`;
+    logContainer.appendChild(d);
+  }, 2200);
+</script>
+</body>
+</html>
