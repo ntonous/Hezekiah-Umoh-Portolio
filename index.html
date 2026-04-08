@@ -481,13 +481,35 @@ footer p{font-size:0.7rem;color:var(--text-dim)}
 .reveal.visible{opacity:1;transform:none}
 
 /* ── RESPONSIVE ── */
-@media(max-width:900px){
-  .hero{grid-template-columns:1fr;padding:90px 6% 60px}
-  .hero-right{display:none}
-  .exp-grid{grid-template-columns:1fr}
+@media(max-width:768px){
+  .hero{
+    display:flex;
+    flex-direction:column;
+    text-align:center;
+    padding:80px 4% 50px;
+  }
+  .hero-left{margin-bottom:2rem}
+  .hero-right{margin-top:2rem}
+  .logo-frame{
+    width:120px;
+    height:120px;
+    margin-bottom:1.5rem;
+  }
+  .pipeline-card{max-width:100%}
   nav .nav-links{display:none}
   nav .nav-status{display:none}
-  section{padding:70px 5%}
+  nav{padding:0 4%}
+  section{padding:50px 4%}
+  .exp-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .hero-name{font-size:clamp(2rem,6vw,2.6rem)}
+  .hero-role{font-size:clamp(0.9rem,2vw,1rem)}
+  .hero-summary{font-size:0.75rem;padding-left:1rem}
+  .logo-frame{width:100px;height:100px}
+  .btn-red,.btn-ghost{padding:0.6rem 1.4rem;font-size:0.7rem}
+  nav{height:50px}
+  .nav-brand{font-size:0.9rem}
 }
 </style>
 </head>
